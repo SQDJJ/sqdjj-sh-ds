@@ -11,7 +11,7 @@ import time
 # 初始化 DeepSeek 客户端
 client = OpenAI(api_key="sk-96d9ffb462c045b0a8f7c4f51268ea23", base_url="https://api.deepseek.com")
 
-# 设置支持中文的字体
+# 设置支持中文的字体，生成图片时会用到
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 使用黑体字体
 plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
