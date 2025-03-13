@@ -9,4 +9,5 @@
 
 运行：
 执行python app_文本.py，服务将运行在 http://0.0.0.0:8081
-在命令行输入curl -X POST http://localhost:8081/analyze -F "file=@表格路径" -F "question=问题"
+在命令行输入：
+curl -X POST http://localhost:8081/analyze -F "file=@表格路径" -F "question=问题"
