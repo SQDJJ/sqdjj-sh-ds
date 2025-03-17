@@ -9,9 +9,12 @@ import json
 import os
 import tempfile
 import logging
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # 启用 CORS
 logging.basicConfig(level=logging.DEBUG)
+
 
 # 初始化 DeepSeek 客户端
 client = OpenAI(api_key="sk-96d9ffb462c045b0a8f7c4f51268ea23", base_url="https://api.deepseek.com")
@@ -51,12 +54,12 @@ def generate_analysis_code(df, question, file_path, error_message=None):
     context = f"Table structure:\nColumns: {list(df.columns)}\n\nSample data:\n{df.head().to_string(index=False)}"
     if error_message:
         context += f"\n\nPrevious Error:\n{error_message}"
-
+    TEMP_DIR = tempfile.gettempdir()  # 临时图片存放目录
     messages = [
         {"role": "system",
          "content": "You are a helpful assistant that generates Python code to analyze tabular data."},
         {"role": "user",
-         "content": f"Context:\n{context}\n\nQuestion:\n{question}\n\nNote: Generate a complete Python code snippet that can be copied and executed in a blank Python file. Please respond in json format. The code should load the data from the file path '{file_path}' and answer the question. Use the DataFrame 'df' for analysis, do not create new data. The code must return the result as a dictionary with a 'result' key. Only return the code, no explanations, comments, or Markdown formatting. If the question involves a specific time range (e.g., 2023-2024), filter the data accordingly.自动检测代码，如果代码里有输出： 比如图表的名称，则设置支持中文的字体，但如果没有，则不需要设置。在生成图表后，显式关闭 Matplotlib 的资源。例如加入这段代码plt.close('all')  # 关闭所有 Matplotlib 资源"},
+         "content": f"Context:\n{context}\n\nQuestion:\n{question}\n\nNote: Generate a complete Python code snippet that can be copied and executed in a blank Python file. Please respond in json format. The code should load the data from the file path '{file_path}' and answer the question.如果返回的代码会生成图片，那么输出的图片保存在{TEMP_DIR}。Use the DataFrame 'df' for analysis, do not create new data. The code must return the result as a dictionary with a 'result' key. Only return the code, no explanations, comments, or Markdown formatting. If the question involves a specific time range (e.g., 2023-2024), filter the data accordingly.自动检测代码，如果代码里有输出： 比如图表的名称，则设置支持中文的字体，但如果没有，则不需要设置。在生成图表后，显式关闭 Matplotlib 的资源。例如加入这段代码plt.close('all')  # 关闭所有 Matplotlib 资源"},
         {"role": "assistant", "content": ""}
     ]
 
@@ -78,7 +81,7 @@ def execute_generated_code(code, df):
         exec(code, namespace)
         # 检查是否有返回结果
         if 'result' in namespace:
-            return True, {"message": "代码执行成功", "result": namespace['result']}
+            return True, namespace['result']
         else:
             return True, {"message": "代码执行成功，但未返回结果"}
     except Exception as e:
@@ -166,3 +169,4 @@ def upload_file():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8081)
+
