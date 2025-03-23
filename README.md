@@ -1,13 +1,11 @@
 # sqdjj-sh-ds
-流程：
-用户上传表格文件和问题。使用 pandas 加载文件数据，并检查文件格式和大小。
-将表格数据的列名和样本数据作为上下文，结合用户的问题，调用 DeepSeek 的 API 生成 Python 代码。返回结果以字典形式存储。
-执行生成的 Python 代码。捕获执行结果或错误信息，并根据需要重试生成代码（最多重试 3 次）。
-将分析结果或错误信息通过 Flask API 返回给用户。
-如果生成的代码涉及图表绘制，自动设置支持中文的字体，并在图表生成后显式关闭 Matplotlib 的资源。
-使用临时文件存储用户上传的文件，分析完成后自动删除临时文件。
+流程：用户提问，系统调用deepseek回答，返回结果给界面。
+如果用户提交了表格，则deepseek会生成代码，系统自动执行这段代码，并返回结果给界面。
+如果涉及图片，则图片会存在根目录的"public\temp"下并展示图片。
 
-运行：
-执行python app_文本.py，服务将运行在 http://0.0.0.0:8081
-在命令行输入：
-curl -X POST http://localhost:8081/analyze -F "file=@表格路径" -F "question=问题"
+运行：1.运行serve.py，
+2.在命令行执行：
+cd C:\Users\CZJ\Desktop\shanghai\example\my-vue-app
+npm run serve
+3.等待连接，然后即可打开网页。
+
