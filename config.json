@@ -1,0 +1,5 @@
+{
+  "api_key": "your_api_key_here",
+  "base_url": "https://your-api-base-url.com",
+  "model": "gpt-4o-mini"
+}
