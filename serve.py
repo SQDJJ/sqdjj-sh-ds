@@ -20,7 +20,15 @@ start_time=time.time()
 os.environ["http_proxy"] = "http://10.177.44.113:7890"
 os.environ["https_proxy"] = "http://10.177.44.113:7890"
 # 初始化 OpenAI 客户端
-llm = LLMClient(api_key="",base_url=None,model='gpt-4o-mini')
+# 读取配置文件
+with open('config.json', 'r', encoding='utf-8') as f:
+    config = json.load(f)
+# 初始化 LLMClient
+llm = LLMClient(
+    api_key=config["api_key"],      # 必须存在，否则报错
+    base_url=config.get("base_url"), # 如果键不存在返回 None
+    model=config["model"]
+)
 # 对话历史
 messages = [{"role": "system", "content": "You are a helpful assistant."}]
 messages_lock = threading.Lock()
