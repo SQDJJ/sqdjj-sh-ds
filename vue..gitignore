@@ -1,0 +1,58 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local config files
+config.json  # 如果你有本地配置文件（如API密钥配置）
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Vite cache
+.cache/
+
+# Vite build output
+.temp/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
